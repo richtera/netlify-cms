@@ -6,13 +6,12 @@ import AssetProxy from "ValueObjects/AssetProxy";
 import { SIMPLE, EDITORIAL_WORKFLOW, status } from "Constants/publishModes";
 import { APIError, EditorialWorkflowError } from "ValueObjects/errors";
 
-const CMS_BRANCH_PREFIX = 'cms/';
-
 export default class API {
   constructor(config) {
     this.api_root = config.api_root || "https://api.github.com";
     this.token = config.token || false;
     this.branch = config.branch || "master";
+    this.cms_branch_prefix = this.branch === 'master' ? 'cms/' : `cms-${this.branch}/`;
     this.repo = config.repo || "";
     this.repoURL = `/repos/${ this.repo }`;
     this.merge_method = config.squash_merges ? "squash" : "merge";
@@ -91,7 +90,7 @@ export default class API {
   }
 
   generateBranchName(basename) {
-    return `${CMS_BRANCH_PREFIX}${basename}`;
+    return `${this.cms_branch_prefix}${basename}`;
   }
 
   checkMetadataRef() {
@@ -611,7 +610,7 @@ export default class API {
   }
 
   assertCmsBranch(branchName) {
-    return branchName.startsWith(CMS_BRANCH_PREFIX);
+    return branchName.startsWith(this.cms_branch_prefix);
   }
 
   patchBranch(branchName, sha, opts = {}) {

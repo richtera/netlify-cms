@@ -138,7 +138,7 @@ export default class GitHub {
       const promises = [];
       branches.map((branch) => {
         promises.push(new Promise((resolve, reject) => {
-          const slug = branch.ref.split("refs/heads/cms/").pop();
+          const slug = branch.ref.split(`refs/heads/${this.api.cms_branch_prefix}`).pop();
           return sem.take(() => this.api.readUnpublishedBranchFile(slug).then((data) => {
             if (data === null || data === undefined) {
               resolve(null);
