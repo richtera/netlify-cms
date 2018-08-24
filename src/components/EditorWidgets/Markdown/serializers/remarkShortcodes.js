@@ -53,7 +53,7 @@ export default function remarkShortcodes({ plugins }) {
    * may contain shortcodes.
    */
   function nodeMayContainShortcode(node) {
-    const validNodeTypes = ['paragraph'];
+    const validNodeTypes = ['paragraph', 'html', 'code'];
     const validChildTypes = ['text', 'html'];
 
     if (validNodeTypes.includes(node.type)) {
